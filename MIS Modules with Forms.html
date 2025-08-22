@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP MIS Module - Dashboard Data Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .form-card { transition: all 0.3s ease; }
+        .form-card:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .active-tab { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .progress-ring { transition: stroke-dasharray 0.3s ease; }
+        .floating-label { transition: all 0.2s ease; }
+        .floating-label.active { transform: translateY(-20px) scale(0.85); color: #667eea; }
+        .metric-card { background: linear-gradient(135deg, #f8faff 0%, #e8f2ff 100%); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-xl">
+        <div class="container mx-auto px-6 py-6">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-3xl font-bold">ERP MIS Module</h1>
+                    <p class="text-blue-100 mt-1">Management Information System - Data Collection Portal</p>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="text-right">
+                        <div class="text-sm opacity-90">Current User</div>
+                        <div class="font-semibold">Riya Sharma</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm opacity-90">Department</div>
+                        <div class="font-semibold">Business Development</div>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-sm opacity-90">Today's Date</div>
+                        <div class="font-semibold" id="currentDate"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-6 py-8">
+        <!-- Dashboard Overview Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="metric-card p-6 rounded-xl shadow-md border border-blue-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Forms Submitted Today</p>
+                        <p class="text-2xl font-bold text-blue-600" id="formsToday">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="metric-card p-6 rounded-xl shadow-md border border-green-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">New Deals This Week</p>
+                        <p class="text-2xl font-bold text-green-600" id="dealsWeek">0</p>
+                    </div>
+                    <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="metric-card p-6 rounded-xl shadow-md border border-purple-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Committee Targets</p>
+                        <p class="text-2xl font-bold text-purple-600" id="committeeProgress">75%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="metric-card p-6 rounded-xl shadow-md border border-orange-100">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm text-gray-600">Response Rate</p>
+                        <p class="text-2xl font-bold text-orange-600" id="responseRate">68%</p>
+                    </div>
+                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Form Selection Tabs -->
+        <div class="bg-white rounded-xl shadow-lg mb-8">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-0">
+                    <button onclick="showForm('committee')" class="form-tab active-tab flex-1 py-4 px-6 text-center font-medium text-sm rounded-tl-xl transition-all">
+                        🏛️ Management Committee Form
+                    </button>
+                    <button onclick="showForm('newdeal')" class="form-tab flex-1 py-4 px-6 text-center font-medium text-sm text-gray-600 hover:text-gray-800 transition-all">
+                        🎯 New Deal Find Form
+                    </button>
+                    <button onclick="showForm('existing')" class="form-tab flex-1 py-4 px-6 text-center font-medium text-sm text-gray-600 hover:text-gray-800 rounded-tr-xl transition-all">
+                        📈 Existing Deal Update Form
+                    </button>
+                </nav>
+            </div>
+
+            <!-- Management Committee Form -->
+            <div id="committeeForm" class="form-content p-8">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Management Committee Form</h3>
+                    <p class="text-gray-600">Submit committee activities and performance data for dashboard analytics</p>
+                </div>
+
+                <form id="managementCommitteeForm" class="space-y-8">
+                    <!-- Basic Information -->
+                    <div class="form-card bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+                            Basic Information
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="relative">
+                                <input type="date" id="mgmtDate" name="mgmtDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Date</label>
+                            </div>
+                            <div class="relative">
+                                <input type="time" id="mgmtTime" name="mgmtTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Time</label>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="mgmtEmployeeName" name="mgmtEmployeeName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="Ankit Verma" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Employee Name</label>
+                            </div>
+                            <div class="relative">
+                                <select id="mgmtCommittee" name="mgmtCommittee" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    <option value="">Select Committee</option>
+                                    <option value="apex">Apex</option>
+                                    <option value="operations">Operations</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="hr">HR</option>
+                                    <option value="marketing">Marketing</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Committee</label>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="relative">
+                                <select id="mgmtMode" name="mgmtMode" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                    <option value="">Select Mode</option>
+                                    <option value="online">Online</option>
+                                    <option value="offline">Offline</option>
+                                    <option value="hybrid">Hybrid</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Mode</label>
+                            </div>
+                            <div class="relative">
+                                <select id="mgmtSector" name="mgmtSector" multiple class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent h-20" required>
+                                    <option value="renewable-energy">Renewable Energy</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="education">Education</option>
+                                    <option value="real-estate">Real Estate</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Sector (Multi-select)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Metrics -->
+                    <div class="form-card bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm mr-3">2</span>
+                            Activity Metrics & Performance
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="relative">
+                                <input type="number" id="mgmtPitchesSent" name="mgmtPitchesSent" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="5">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">No. of Pitches Sent</label>
+                            </div>
+                            <div class="relative">
+                                <input type="number" id="mgmtResponses" name="mgmtResponses" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="2" onchange="calculateSuccessRate('mgmt')">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Responses from Pitches</label>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="mgmtSuccessRate" name="mgmtSuccessRate" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100" readonly placeholder="40%">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Success Rate</label>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="relative">
+                                <input type="time" id="mgmtStartTime" name="mgmtStartTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="09:00">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Start Time</label>
+                            </div>
+                            <div class="relative">
+                                <input type="time" id="mgmtEndTime" name="mgmtEndTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="12:00">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">End Time</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Process & Results -->
+                    <div class="form-card bg-gradient-to-r from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm mr-3">3</span>
+                            Process & Results
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Process/Method Used</label>
+                                <textarea id="mgmtProcess" name="mgmtProcess" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="LinkedIn Lead Generation"></textarea>
+                            </div>
+                            <div class="relative">
+                                <input type="number" id="mgmtLeadsFound" name="mgmtLeadsFound" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="12">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Name of Leads Found</label>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Value Created</label>
+                            <textarea id="mgmtValueCreated" name="mgmtValueCreated" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Found high-value lead in Fintech."></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Questions</label>
+                                <textarea id="mgmtQuestions" name="mgmtQuestions" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="How to prioritize high-value sectors?"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Suggestions</label>
+                                <textarea id="mgmtSuggestions" name="mgmtSuggestions" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Create sector-wise pitch templates"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Upload & Links -->
+                    <div class="form-card bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm mr-3">4</span>
+                            Uploads & Links
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Uploads</label>
+                                <input type="file" id="mgmtUploads" name="mgmtUploads" multiple class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <p class="text-xs text-gray-500 mt-1">Upload pitch lists, reports, or related documents</p>
+                            </div>
+                            <div class="relative">
+                                <input type="url" id="mgmtLink" name="mgmtLink" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="https://crm.example/leads">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Link</label>
+                            </div>
+                        </div>
+                        <div class="relative mt-6">
+                            <select id="mgmtLeadSource" name="mgmtLeadSource" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" required>
+                                <option value="">Select Lead Source</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="cold-calling">Cold Calling</option>
+                                <option value="referral">Referral</option>
+                                <option value="website">Website</option>
+                                <option value="social-media">Social Media</option>
+                                <option value="networking">Networking</option>
+                                <option value="email-campaign">Email Campaign</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Lead Source</label>
+                        </div>
+                    </div>
+
+                    <!-- Activity Checklist -->
+                    <div class="form-card bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm mr-3">5</span>
+                            Activity Checklist (20 Items)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="mgmtActivityList">
+                            <!-- Activities will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Approvals -->
+                    <div class="form-card bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-yellow-600 text-white rounded-full flex items-center justify-center text-sm mr-3">6</span>
+                            Approvals
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <select id="mgmtApexApproval" name="mgmtApexApproval" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                                    <option value="">Select Approval Status</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Approval - Apex Leader</label>
+                            </div>
+                            <div class="relative">
+                                <select id="mgmtManagerApproval" name="mgmtManagerApproval" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                                    <option value="">Select Approval Status</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Approval - Manager</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-4 pt-6">
+                        <button type="button" onclick="saveDraft('committee')" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg hover:from-blue-700 hover:to-purple-700 transition-colors font-semibold shadow-lg">
+                            Submit Committee Data
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- New Deal Find Form -->
+            <div id="newdealForm" class="form-content p-8 hidden">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">New Deal Find Form</h3>
+                    <p class="text-gray-600">Record new deal discovery activities and lead generation for dashboard analytics</p>
+                </div>
+
+                <form id="newDealForm" class="space-y-8">
+                    <!-- Basic Information -->
+                    <div class="form-card bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+                            Basic Information
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                            <div class="relative">
+                                <input type="date" id="newDealDate" name="newDealDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Date</label>
+                            </div>
+                            <div class="relative">
+                                <input type="time" id="newDealTime" name="newDealTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Time</label>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="newDealEmployeeName" name="newDealEmployeeName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Ankit Verma" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Employee Name</label>
+                            </div>
+                            <div class="relative">
+                                <select id="newDealCommittee" name="newDealCommittee" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                                    <option value="">Select Committee</option>
+                                    <option value="apex">Apex</option>
+                                    <option value="operations">Operations</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="hr">HR</option>
+                                    <option value="marketing">Marketing</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Committee</label>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="relative">
+                                <select id="newDealMode" name="newDealMode" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" required>
+                                    <option value="">Select Mode</option>
+                                    <option value="online">Online</option>
+                                    <option value="offline">Offline</option>
+                                    <option value="hybrid">Hybrid</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Mode</label>
+                            </div>
+                            <div class="relative">
+                                <select id="newDealSector" name="newDealSector" multiple class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent h-20" required>
+                                    <option value="renewable-energy">Renewable Energy</option>
+                                    <option value="technology">Technology</option>
+                                    <option value="healthcare">Healthcare</option>
+                                    <option value="finance">Finance</option>
+                                    <option value="manufacturing">Manufacturing</option>
+                                    <option value="retail">Retail</option>
+                                    <option value="education">Education</option>
+                                    <option value="real-estate">Real Estate</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Sector (Multi-select)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity Metrics -->
+                    <div class="form-card bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm mr-3">2</span>
+                            Activity Metrics & Performance
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="relative">
+                                <input type="number" id="newDealPitchesSent" name="newDealPitchesSent" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="5">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">No. of Pitches Sent</label>
+                            </div>
+                            <div class="relative">
+                                <input type="number" id="newDealResponses" name="newDealResponses" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="2" onchange="calculateSuccessRate('newDeal')">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Responses from Pitches</label>
+                            </div>
+                            <div class="relative">
+                                <input type="text" id="newDealSuccessRate" name="newDealSuccessRate" class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-100" readonly placeholder="40%">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Success Rate</label>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div class="relative">
+                                <input type="time" id="newDealStartTime" name="newDealStartTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="09:00">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Start Time</label>
+                            </div>
+                            <div class="relative">
+                                <input type="time" id="newDealEndTime" name="newDealEndTime" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="12:00">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">End Time</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Process & Results -->
+                    <div class="form-card bg-gradient-to-r from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm mr-3">3</span>
+                            Process & Results
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Process/Method Used</label>
+                                <textarea id="newDealProcess" name="newDealProcess" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="LinkedIn Lead Generation"></textarea>
+                            </div>
+                            <div class="relative">
+                                <input type="number" id="newDealLeadsFound" name="newDealLeadsFound" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="12">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Name of Leads Found</label>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Value Created</label>
+                            <textarea id="newDealValueCreated" name="newDealValueCreated" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Found high-value lead in Fintech."></textarea>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Questions</label>
+                                <textarea id="newDealQuestions" name="newDealQuestions" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="How to prioritize high-value sectors?"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Suggestions</label>
+                                <textarea id="newDealSuggestions" name="newDealSuggestions" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Create sector-wise pitch templates"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- File Upload & Links -->
+                    <div class="form-card bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm mr-3">4</span>
+                            Uploads & Links
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Uploads</label>
+                                <input type="file" id="newDealUploads" name="newDealUploads" multiple class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                                <p class="text-xs text-gray-500 mt-1">Upload pitch lists, reports, or related documents</p>
+                            </div>
+                            <div class="relative">
+                                <input type="url" id="newDealLink" name="newDealLink" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" placeholder="https://crm.example/leads">
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Link</label>
+                            </div>
+                        </div>
+                        <div class="relative mt-6">
+                            <select id="newDealLeadSource" name="newDealLeadSource" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" required>
+                                <option value="">Select Lead Source</option>
+                                <option value="linkedin">LinkedIn</option>
+                                <option value="cold-calling">Cold Calling</option>
+                                <option value="referral">Referral</option>
+                                <option value="website">Website</option>
+                                <option value="social-media">Social Media</option>
+                                <option value="networking">Networking</option>
+                                <option value="email-campaign">Email Campaign</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Lead Source</label>
+                        </div>
+                    </div>
+
+                    <!-- Activity Checklist -->
+                    <div class="form-card bg-gradient-to-r from-indigo-50 to-blue-50 p-6 rounded-xl border border-indigo-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-indigo-600 text-white rounded-full flex items-center justify-center text-sm mr-3">5</span>
+                            Activity Checklist (20 Items)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4" id="newDealActivityList">
+                            <!-- Activities will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Approvals -->
+                    <div class="form-card bg-gradient-to-r from-yellow-50 to-orange-50 p-6 rounded-xl border border-yellow-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-yellow-600 text-white rounded-full flex items-center justify-center text-sm mr-3">6</span>
+                            Approvals
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <select id="newDealApexApproval" name="newDealApexApproval" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                                    <option value="">Select Approval Status</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Approval - Apex Leader</label>
+                            </div>
+                            <div class="relative">
+                                <select id="newDealManagerApproval" name="newDealManagerApproval" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                                    <option value="">Select Approval Status</option>
+                                    <option value="yes">Yes</option>
+                                    <option value="no">No</option>
+                                    <option value="pending">Pending</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Approval - Manager</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-4 pt-6">
+                        <button type="button" onclick="saveDraft('newdeal')" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-colors font-semibold shadow-lg">
+                            Add New Deal to Pipeline
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Existing Deal Update Form -->
+            <div id="existingForm" class="form-content p-8 hidden">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-900 mb-2">Existing Deal Update Form</h3>
+                    <p class="text-gray-600">Update progress, status, and activities for existing deals in your pipeline</p>
+                </div>
+
+                <form id="existingDealForm" class="space-y-8">
+                    <!-- Deal Selection -->
+                    <div class="form-card bg-gradient-to-r from-orange-50 to-red-50 p-6 rounded-xl border border-orange-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-orange-600 text-white rounded-full flex items-center justify-center text-sm mr-3">1</span>
+                            Select Existing Deal
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="relative">
+                                <select id="existingDealId" name="existingDealId" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" required onchange="loadDealDetails()">
+                                    <option value="">Select Existing Deal</option>
+                                    <option value="deal-001">TechCorp Solutions - Web Development (₹15L)</option>
+                                    <option value="deal-002">HealthPlus Systems - Mobile App (₹8L)</option>
+                                    <option value="deal-003">EduTech Innovations - Software Platform (₹25L)</option>
+                                    <option value="deal-004">RetailMax - E-commerce Solution (₹12L)</option>
+                                    <option value="deal-005">FinanceFlow - Dashboard System (₹18L)</option>
+                                </select>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Existing Deal</label>
+                            </div>
+                            <div class="relative">
+                                <input type="date" id="updateDate" name="updateDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent" required>
+                                <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Update Date</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deal Status Update -->
+                    <div class="form-card bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-xl border border-blue-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm mr-3">2</span>
+                            Status & Progress Update
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <select id="dealStatus" name="dealStatus" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" required>
+                                        <option value="">Select Current Status</option>
+                                        <option value="prospecting">Prospecting</option>
+                                        <option value="qualification">Qualification</option>
+                                        <option value="proposal">Proposal Sent</option>
+                                        <option value="negotiation">Negotiation</option>
+                                        <option value="closing">Closing</option>
+                                        <option value="won">Won</option>
+                                        <option value="lost">Lost</option>
+                                        <option value="on-hold">On Hold</option>
+                                    </select>
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Deal Status</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" id="progressPercentage" name="progressPercentage" min="0" max="100" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Progress Percentage</label>
+                                </div>
+                                <div class="relative">
+                                    <select id="updatedProbability" name="updatedProbability" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">Update Probability</option>
+                                        <option value="high">High (80-100%)</option>
+                                        <option value="medium">Medium (50-79%)</option>
+                                        <option value="low">Low (20-49%)</option>
+                                        <option value="very-low">Very Low (<20%)</option>
+                                    </select>
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Success Probability</label>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="relative">
+                                    <input type="text" id="updatedValue" name="updatedValue" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="₹15,00,000">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Updated Deal Value</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="date" id="updatedClosingDate" name="updatedClosingDate" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Expected Closing Date</label>
+                                </div>
+                                <div class="relative">
+                                    <select id="priority" name="priority" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                        <option value="">Set Priority</option>
+                                        <option value="critical">Critical</option>
+                                        <option value="high">High</option>
+                                        <option value="medium">Medium</option>
+                                        <option value="low">Low</option>
+                                    </select>
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Deal Priority</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activities & Communications -->
+                    <div class="form-card bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-xl border border-green-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-green-600 text-white rounded-full flex items-center justify-center text-sm mr-3">3</span>
+                            Recent Activities & Communications
+                        </h4>
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="relative">
+                                    <input type="number" id="callsMade" name="callsMade" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Calls Made</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" id="meetingsHeld" name="meetingsHeld" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Meetings Held</label>
+                                </div>
+                                <div class="relative">
+                                    <input type="number" id="emailsSent" name="emailsSent" min="0" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Emails Sent</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Activity Summary</label>
+                                <textarea id="activitySummary" name="activitySummary" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Summarize recent activities, client interactions, and progress made..."></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Client Feedback</label>
+                                    <textarea id="clientFeedback" name="clientFeedback" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Any feedback received from the client..."></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-3">Challenges/Blockers</label>
+                                    <textarea id="challenges" name="challenges" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent" placeholder="Any challenges or blockers encountered..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Next Actions -->
+                    <div class="form-card bg-gradient-to-r from-purple-50 to-violet-50 p-6 rounded-xl border border-purple-200">
+                        <h4 class="text-lg font-semibold text-gray-900 mb-6 flex items-center">
+                            <span class="w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center text-sm mr-3">4</span>
+                            Next Actions & Follow-up Plan
+                        </h4>
+                        <div class="space-y-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Planned Next Actions</label>
+                                <textarea id="plannedActions" name="plannedActions" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="List the specific actions planned for moving this deal forward..."></textarea>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="relative">
+                                    <input type="date" id="nextFollowUp" name="nextFollowUp" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Next Follow-up Date</label>
+                                </div>
+                                <div class="relative">
+                                    <select id="followUpType" name="followUpType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                                        <option value="">Select Follow-up Type</option>
+                                        <option value="call">Phone Call</option>
+                                        <option value="email">Email</option>
+                                        <option value="meeting">In-person Meeting</option>
+                                        <option value="video-call">Video Call</option>
+                                        <option value="proposal">Send Proposal</option>
+                                        <option value="demo">Product Demo</option>
+                                    </select>
+                                    <label class="absolute left-4 -top-2 bg-white px-2 text-sm text-gray-600">Follow-up Type</label>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Additional Notes</label>
+                                <textarea id="additionalNotes" name="additionalNotes" rows="3" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="Any additional notes or observations about this deal..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-end space-x-4 pt-6">
+                        <button type="button" onclick="saveDraft('existing')" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                            Save Draft
+                        </button>
+                        <button type="submit" class="px-8 py-3 bg-gradient-to-r from-orange-600 to-red-600 text-white rounded-lg hover:from-orange-700 hover:to-red-700 transition-colors font-semibold shadow-lg">
+                            Update Deal Status
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="successModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+            <div class="bg-white rounded-xl p-8 max-w-md mx-4 text-center transform transition-all">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-semibold text-gray-900 mb-2" id="successTitle">Form Submitted Successfully!</h3>
+                <p class="text-gray-600 mb-6" id="successMessage">Your data has been recorded and will be processed for dashboard analytics.</p>
+                <button onclick="closeSuccessModal()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+            
+            // Set form dates to today
+            const today = new Date().toISOString().split('T')[0];
+            const currentTime = new Date().toTimeString().slice(0, 5);
+            
+            // Set dates for all forms
+            document.getElementById('mgmtDate').value = today;
+            document.getElementById('mgmtTime').value = currentTime;
+            document.getElementById('newDealDate').value = today;
+            document.getElementById('newDealTime').value = currentTime;
+            document.getElementById('updateDate').value = today;
+            
+            // Initialize activity checklists
+            initializeActivityChecklists();
+            
+            // Load any saved drafts
+            loadAllDrafts();
+            
+            // Update dashboard metrics
+            updateDashboardMetrics();
+        });
+
+        // Initialize activity checklists for all forms
+        function initializeActivityChecklists() {
+            const activities = [
+                'Market Research', 'Cold Email', 'LinkedIn Outreach', 'Phone Calls', 'Follow-up Calls',
+                'Proposal Creation', 'Client Meeting', 'Demo Preparation', 'Pitch Presentation', 'Competitor Analysis',
+                'Lead Qualification', 'Budget Discussion', 'Timeline Planning', 'Contract Review', 'Reference Check',
+                'Technical Discussion', 'Stakeholder Meeting', 'Negotiation', 'Documentation', 'Final Approval'
+            ];
+
+            // Initialize for Management Committee Form
+            const mgmtActivityList = document.getElementById('mgmtActivityList');
+            if (mgmtActivityList) {
+                mgmtActivityList.innerHTML = activities.map((activity, index) => `
+                    <div class="flex items-center space-x-2 p-2 bg-white rounded border">
+                        <input type="checkbox" id="mgmtActivity${index}" name="mgmtActivities" value="${activity}" class="rounded text-indigo-600 focus:ring-indigo-500">
+                        <label for="mgmtActivity${index}" class="text-sm text-gray-700 cursor-pointer">${activity}</label>
+                    </div>
+                `).join('');
+            }
+
+            // Initialize for New Deal Form
+            const newDealActivityList = document.getElementById('newDealActivityList');
+            if (newDealActivityList) {
+                newDealActivityList.innerHTML = activities.map((activity, index) => `
+                    <div class="flex items-center space-x-2 p-2 bg-white rounded border">
+                        <input type="checkbox" id="newDealActivity${index}" name="newDealActivities" value="${activity}" class="rounded text-indigo-600 focus:ring-indigo-500">
+                        <label for="newDealActivity${index}" class="text-sm text-gray-700 cursor-pointer">${activity}</label>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Calculate success rate automatically
+        function calculateSuccessRate(formType) {
+            const pitchesId = formType + 'PitchesSent';
+            const responsesId = formType + 'Responses';
+            const successRateId = formType + 'SuccessRate';
+            
+            const pitches = parseInt(document.getElementById(pitchesId).value) || 0;
+            const responses = parseInt(document.getElementById(responsesId).value) || 0;
+            
+            if (pitches > 0) {
+                const rate = Math.round((responses / pitches) * 100);
+                document.getElementById(successRateId).value = rate + '%';
+            } else {
+                document.getElementById(successRateId).value = '0%';
+            }
+        }
+
+        // Show specific form
+        function showForm(formType) {
+            // Hide all forms
+            document.querySelectorAll('.form-content').forEach(form => {
+                form.classList.add('hidden');
+            });
+            
+            // Show selected form
+            document.getElementById(formType + 'Form').classList.remove('hidden');
+            
+            // Update tab styling
+            document.querySelectorAll('.form-tab').forEach(tab => {
+                tab.classList.remove('active-tab');
+                tab.classList.add('text-gray-600');
+            });
+            event.target.classList.add('active-tab');
+            event.target.classList.remove('text-gray-600');
+        }
+
+        // Load deal details for existing deal form
+        function loadDealDetails() {
+            const dealId = document.getElementById('existingDealId').value;
+            if (!dealId) return;
+            
+            // Simulate loading deal details
+            const dealData = {
+                'deal-001': {
+                    status: 'proposal',
+                    progress: 60,
+                    probability: 'high',
+                    value: '₹15,00,000',
+                    closingDate: '2024-02-15'
+                },
+                'deal-002': {
+                    status: 'negotiation',
+                    progress: 75,
+                    probability: 'medium',
+                    value: '₹8,00,000',
+                    closingDate: '2024-01-30'
+                }
+            };
+            
+            const data = dealData[dealId];
+            if (data) {
+                document.getElementById('dealStatus').value = data.status;
+                document.getElementById('progressPercentage').value = data.progress;
+                document.getElementById('updatedProbability').value = data.probability;
+                document.getElementById('updatedValue').value = data.value;
+                document.getElementById('updatedClosingDate').value = data.closingDate;
+            }
+        }
+
+        // Save draft functionality
+        function saveDraft(formType) {
+            const formId = formType === 'committee' ? 'managementCommitteeForm' : 
+                          formType === 'newdeal' ? 'newDealForm' : 'existingDealForm';
+            
+            const formData = new FormData(document.getElementById(formId));
+            const draftData = Object.fromEntries(formData);
+            
+            localStorage.setItem(`misDraft_${formType}`, JSON.stringify(draftData));
+            
+            // Show success feedback
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Draft Saved!';
+            button.classList.add('bg-green-600', 'text-white');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('bg-green-600', 'text-white');
+            }, 2000);
+        }
+
+        // Load all drafts
+        function loadAllDrafts() {
+            ['committee', 'newdeal', 'existing'].forEach(formType => {
+                const draft = localStorage.getItem(`misDraft_${formType}`);
+                if (draft) {
+                    const data = JSON.parse(draft);
+                    Object.keys(data).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.value = data[key];
+                        }
+                    });
+                }
+            });
+        }
+
+        // Update dashboard metrics
+        function updateDashboardMetrics() {
+            // Simulate real-time data updates
+            const metrics = {
+                formsToday: Math.floor(Math.random() * 10) + 1,
+                dealsWeek: Math.floor(Math.random() * 15) + 5,
+                committeeProgress: Math.floor(Math.random() * 30) + 70,
+                responseRate: Math.floor(Math.random() * 20) + 60
+            };
+            
+            document.getElementById('formsToday').textContent = metrics.formsToday;
+            document.getElementById('dealsWeek').textContent = metrics.dealsWeek;
+            document.getElementById('committeeProgress').textContent = metrics.committeeProgress + '%';
+            document.getElementById('responseRate').textContent = metrics.responseRate + '%';
+        }
+
+        // Form submission handlers
+        document.getElementById('managementCommitteeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitForm('Management Committee', 'Your committee data has been recorded and will be used for strategic dashboard analytics.');
+        });
+
+        document.getElementById('newDealForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitForm('New Deal Discovery', 'The new deal has been added to your pipeline and will appear in dashboard metrics.');
+        });
+
+        document.getElementById('existingDealForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitForm('Deal Update', 'Deal status has been updated and changes will reflect in your dashboard analytics.');
+        });
+
+        // Submit form with loading state
+        function submitForm(title, message) {
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.textContent;
+            
+            // Show loading state
+            submitButton.textContent = 'Submitting...';
+            submitButton.disabled = true;
+            
+            // Simulate API call
+            setTimeout(() => {
+                // Reset button
+                submitButton.textContent = originalText;
+                submitButton.disabled = false;
+                
+                // Show success modal
+                document.getElementById('successTitle').textContent = title + ' Submitted!';
+                document.getElementById('successMessage').textContent = message;
+                document.getElementById('successModal').classList.remove('hidden');
+                
+                // Clear form
+                event.target.reset();
+                
+                // Update metrics
+                updateDashboardMetrics();
+                
+                // Clear relevant draft
+                const formType = title.includes('Committee') ? 'committee' : 
+                               title.includes('New Deal') ? 'newdeal' : 'existing';
+                localStorage.removeItem(`misDraft_${formType}`);
+                
+            }, 2000);
+        }
+
+        // Close success modal
+        function closeSuccessModal() {
+            document.getElementById('successModal').classList.add('hidden');
+        }
+
+        // Auto-save functionality
+        setInterval(() => {
+            const activeForm = document.querySelector('.form-content:not(.hidden)');
+            if (activeForm) {
+                const formId = activeForm.querySelector('form').id;
+                const formType = formId.includes('management') ? 'committee' : 
+                               formId.includes('newDeal') ? 'newdeal' : 'existing';
+                
+                const formData = new FormData(document.getElementById(formId));
+                const draftData = Object.fromEntries(formData);
+                
+                // Only save if there's actual data
+                if (Object.values(draftData).some(value => value.trim() !== '')) {
+                    localStorage.setItem(`misDraft_${formType}`, JSON.stringify(draftData));
+                }
+            }
+        }, 30000); // Auto-save every 30 seconds
+
+        // Real-time metrics update
+        setInterval(updateDashboardMetrics, 60000); // Update every minute
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9730d9e560ed9ac8',t:'MTc1NTg0OTc4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
